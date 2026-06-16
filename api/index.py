@@ -49,8 +49,8 @@ def restore_placeholders(text: str, metadata: Dict[str, Any]) -> str:
     if not text or not metadata:
         return text
     restored_text = text
-    for placeholder, original_value in metadata.items():
-        restored_text = restored_text.replace(placeholder, original_value)
+    for placeholder in sorted(metadata.keys(), key=len, reverse=True):
+        restored_text = restored_text.replace(placeholder, metadata[placeholder])
     return restored_text
 
 ZODIAC_KEYWORDS = [
@@ -113,6 +113,11 @@ class RequestCounters:
         self.phone = 1
         self.otp = 1
         self.ssn = 1
+        self.name = 1
+        self.mrn = 1
+        self.patient_id = 1
+        self.case = 1
+        self.policy = 1
 
 def get_email_placeholder(counters):
     placeholder = f"[EMAIL_{counters.email}]"
@@ -147,6 +152,31 @@ def get_month_placeholder(counters):
 def get_day_placeholder(counters):
     placeholder = f"[DAY_{counters.day}]"
     counters.day += 1
+    return placeholder
+
+def get_name_placeholder(counters):
+    placeholder = f"[NAME_{counters.name}]"
+    counters.name += 1
+    return placeholder
+
+def get_mrn_placeholder(counters):
+    placeholder = f"[MRN_{counters.mrn}]"
+    counters.mrn += 1
+    return placeholder
+
+def get_patient_id_placeholder(counters):
+    placeholder = f"[PATIENT_ID_{counters.patient_id}]"
+    counters.patient_id += 1
+    return placeholder
+
+def get_case_placeholder(counters):
+    placeholder = f"[CASE_{counters.case}]"
+    counters.case += 1
+    return placeholder
+
+def get_policy_placeholder(counters):
+    placeholder = f"[POLICY_{counters.policy}]"
+    counters.policy += 1
     return placeholder
 
 def detect_context(text: str) -> str:
@@ -258,6 +288,202 @@ def is_otp_fuzzy(word: str, full_context: str) -> Tuple[bool, float]:
         return False, 0
     return False, 0
 
+NAME_KEYWORDS = ['patient', 'name', 'full name', "patient's", 'dr', 'mr', 'mrs', 'ms', 'called', 'named']
+
+TITLE_WORDS = {
+    "PATIENT",
+    "NAME",
+    "FULL",
+    "DR",
+    "MR",
+    "MRS",
+    "MS"
+}
+
+MEDICAL_WORDS = {
+    "MRI", "XRAY", "XRAYS", "REPORT", "SCAN", "CHEST", "BLOOD",
+    "TEST", "LAB", "RESULT", "CT", "ULTRASOUND", "SONOGRAM",
+    "BIOPSY", "CULTURE", "PATHOLOGY", "HISTOLOGY", "CYTOLOGY"
+}
+
+def is_person_name(word: str, full_context: str) -> Tuple[bool, float]:
+    if len(word) < 2 or len(word) > 50:
+        return False, 0
+    
+    if re.search(r'\d', word):
+        return False, 0
+    
+    if not re.match(r'^[A-Z][a-z]*(?:\s+[A-Z][a-z]*)*$', word) and not re.match(r'^[A-Z]+(?:\s+[A-Z]+)*$', word):
+        return False, 0
+    
+    parts = word.strip().split()
+    for part in parts:
+        if part.upper() in TITLE_WORDS:
+            return False, 0
+        if part.upper() in MEDICAL_WORDS:
+            return False, 0
+    
+    has_context = has_context_keyword(full_context, NAME_KEYWORDS)
+    
+    if not has_context:
+        return False, 0
+    
+    if 1 <= len(parts) <= 3:
+        return True, 0.80
+    
+    return False, 0
+
+def extract_name_entities(text: str, counters, detected_values: set) -> list:
+    entities = []
+    detected_values = detected_values or set()
+    
+    anchored_patterns = [
+        (r'\b(?:Patient Name|Patient\'s Name)[:\s]+([A-Z][a-z]+(?:\s+[A-Z][a-z]+){0,2})\b'),
+        (r'\b(?:Patient Name|Patient\'s Name)[:\s]+([A-Z]+(?:\s+[A-Z]+){0,2})\b'),
+        (r'\b(?:Patient|Name|Full Name)[:\s]+([A-Z][a-z]+(?:\s+[A-Z][a-z]+){0,2})\b'),
+        (r'\b(?:Patient|Name|Full Name)[:\s]+([A-Z]+(?:\s+[A-Z]+){0,2})\b'),
+        (r'\b(?:Patient)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+){0,2})\b'),
+        (r'\b(?:Patient)\s+([A-Z]+(?:\s+[A-Z]+){0,2})\b'),
+        (r'\b(?:Name)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+){0,2})\b'),
+        (r'\b(?:Name)\s+([A-Z]+(?:\s+[A-Z]+){0,2})\b'),
+        (r'\b(?:Dr|Mr|Mrs|Ms)\.?\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+){0,2})\b'),
+        (r'\b(?:Dr|Mr|Mrs|Ms)\.?\s+([A-Z]+(?:\s+[A-Z]+){0,2})\b'),
+        (r'\b(?:called|named)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+){0,2})\b'),
+        (r'\b(?:called|named)\s+([A-Z]+(?:\s+[A-Z]+){0,2})\b'),
+    ]
+    
+    for pattern in anchored_patterns:
+        for match in re.finditer(pattern, text):
+            word = match.group(1)
+            
+            if word in detected_values:
+                continue
+            
+            is_match, conf = is_person_name(word, text)
+            if is_match:
+                placeholder = get_name_placeholder(counters)
+                entities.append({
+                    'type': 'NAME',
+                    'value': word,
+                    'confidence': conf,
+                    'placeholder': placeholder
+                })
+                detected_values.add(word)
+    
+    return entities
+
+def extract_mrn_entities(text: str, counters, detected_values: set) -> list:
+    entities = []
+    detected_values = detected_values or set()
+    
+    patterns = [
+        r'\b(?:MRN|Medical Record Number)[:\s]+([A-Z0-9]{4,20})\b',
+        r'\b(?:MRN|Medical Record Number)[:\s]+([0-9]{4,15})\b',
+    ]
+    
+    for pattern in patterns:
+        for match in re.finditer(pattern, text, re.IGNORECASE):
+            word = match.group(1)
+            
+            if word in detected_values:
+                continue
+            
+            if len(word) >= 4:
+                placeholder = get_mrn_placeholder(counters)
+                entities.append({
+                    'type': 'MRN',
+                    'value': word,
+                    'confidence': 0.90,
+                    'placeholder': placeholder
+                })
+                detected_values.add(word)
+    
+    return entities
+
+def extract_patient_id_entities(text: str, counters, detected_values: set) -> list:
+    entities = []
+    detected_values = detected_values or set()
+    
+    patterns = [
+        r'\b(?:Patient ID|PID|Patient Identifier)[:\s]+([A-Z0-9][-]?[A-Z0-9]{3,20})\b',
+        r'\b(?:Patient ID|PID)[:\s]+([0-9]{4,15})\b',
+    ]
+    
+    for pattern in patterns:
+        for match in re.finditer(pattern, text, re.IGNORECASE):
+            word = match.group(1)
+            
+            if word in detected_values:
+                continue
+            
+            if len(word) >= 4:
+                placeholder = get_patient_id_placeholder(counters)
+                entities.append({
+                    'type': 'PATIENT_ID',
+                    'value': word,
+                    'confidence': 0.90,
+                    'placeholder': placeholder
+                })
+                detected_values.add(word)
+    
+    return entities
+
+def extract_case_entities(text: str, counters, detected_values: set) -> list:
+    entities = []
+    detected_values = detected_values or set()
+    
+    patterns = [
+        r'\b(?:Case Number|Case No|Case ID)[:\s]+([A-Z0-9][-]?[A-Z0-9]{3,20})\b',
+        r'\b(?:Case Number|Case No|Case ID)[:\s]+([0-9]{4,15})\b',
+    ]
+    
+    for pattern in patterns:
+        for match in re.finditer(pattern, text, re.IGNORECASE):
+            word = match.group(1)
+            
+            if word in detected_values:
+                continue
+            
+            if len(word) >= 4:
+                placeholder = get_case_placeholder(counters)
+                entities.append({
+                    'type': 'CASE',
+                    'value': word,
+                    'confidence': 0.90,
+                    'placeholder': placeholder
+                })
+                detected_values.add(word)
+    
+    return entities
+
+def extract_policy_entities(text: str, counters, detected_values: set) -> list:
+    entities = []
+    detected_values = detected_values or set()
+    
+    patterns = [
+        r'\b(?:Policy Number|Policy No|Policy ID|Insurance Policy)[:\s]+([A-Z0-9][-]?[A-Z0-9]{4,20})\b',
+        r'\b(?:Policy Number|Policy No)[:\s]+([0-9]{5,15})\b',
+    ]
+    
+    for pattern in patterns:
+        for match in re.finditer(pattern, text, re.IGNORECASE):
+            word = match.group(1)
+            
+            if word in detected_values:
+                continue
+            
+            if len(word) >= 5:
+                placeholder = get_policy_placeholder(counters)
+                entities.append({
+                    'type': 'POLICY',
+                    'value': word,
+                    'confidence': 0.90,
+                    'placeholder': placeholder
+                })
+                detected_values.add(word)
+    
+    return entities
+
 def extract_fuzzy_entities(text: str, counters, detected_values: set) -> list:
     entities = []
     detected_values = detected_values or set()
@@ -313,13 +539,13 @@ User message:
     
     try:
         completion = groq_client.chat.completions.create(
-            model="llama-3.1-8b-instant",
+            model="llama-3.3-70b-versatile",
             messages=[
                 {"role": "system", "content": SYSTEM_PROMPT},
                 {"role": "user", "content": user_message}
             ],
             temperature=0,
-            max_tokens=200,
+            max_tokens=1000,
         )
         return completion.choices[0].message.content or ""
     except Exception as e:
@@ -332,7 +558,7 @@ def validate_placeholders(response: str, metadata: Dict[str, Any], is_mock: bool
     if is_mock:
         return response
     
-    pattern = r'\[(?:EMAIL|PHONE|OTP|SSN|YEAR|MONTH|DAY)_[0-9]+\]'
+    pattern = r'\[(?:EMAIL|PHONE|OTP|SSN|YEAR|MONTH|DAY|NAME|MRN|PATIENT_ID|CASE|POLICY)_[0-9]+\]'
     placeholders = re.findall(pattern, response)
     for ph in placeholders:
         if ph not in metadata:
@@ -401,7 +627,47 @@ async def chat_endpoint(request: ChatRequest):
             else:
                 masked_date = original_date
             
-            masked_prompt = masked_prompt.replace(original_date, masked_date)
+            masked_prompt = replace_first_occurrence(masked_prompt, original_date, masked_date)
+        
+        name_entities = extract_name_entities(cleaned_prompt, counters, detected_values)
+        
+        for entity in name_entities:
+            placeholder = entity['placeholder']
+            masked_prompt = replace_first_occurrence(masked_prompt, entity['value'], placeholder)
+            metadata[placeholder] = entity['value']
+            detected_values.add(entity['value'])
+        
+        mrn_entities = extract_mrn_entities(cleaned_prompt, counters, detected_values)
+        
+        for entity in mrn_entities:
+            placeholder = entity['placeholder']
+            masked_prompt = replace_first_occurrence(masked_prompt, entity['value'], placeholder)
+            metadata[placeholder] = entity['value']
+            detected_values.add(entity['value'])
+        
+        patient_id_entities = extract_patient_id_entities(cleaned_prompt, counters, detected_values)
+        
+        for entity in patient_id_entities:
+            placeholder = entity['placeholder']
+            masked_prompt = replace_first_occurrence(masked_prompt, entity['value'], placeholder)
+            metadata[placeholder] = entity['value']
+            detected_values.add(entity['value'])
+        
+        case_entities = extract_case_entities(cleaned_prompt, counters, detected_values)
+        
+        for entity in case_entities:
+            placeholder = entity['placeholder']
+            masked_prompt = replace_first_occurrence(masked_prompt, entity['value'], placeholder)
+            metadata[placeholder] = entity['value']
+            detected_values.add(entity['value'])
+        
+        policy_entities = extract_policy_entities(cleaned_prompt, counters, detected_values)
+        
+        for entity in policy_entities:
+            placeholder = entity['placeholder']
+            masked_prompt = replace_first_occurrence(masked_prompt, entity['value'], placeholder)
+            metadata[placeholder] = entity['value']
+            detected_values.add(entity['value'])
         
         fuzzy_entities = extract_fuzzy_entities(cleaned_prompt, counters, detected_values)
         
@@ -440,7 +706,7 @@ async def chat_endpoint(request: ChatRequest):
             metadata=result.metadata,
             llm_response_masked=llm_response_masked,
             llm_response_restored=llm_response_restored,
-            has_pii=result.has_pii or len(fuzzy_entities) > 0 or len(metadata) > 0
+            has_pii=result.has_pii or len(fuzzy_entities) > 0 or len(name_entities) > 0 or len(mrn_entities) > 0 or len(patient_id_entities) > 0 or len(case_entities) > 0 or len(policy_entities) > 0 or len(metadata) > 0
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
