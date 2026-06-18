@@ -6,7 +6,7 @@ import LoadingSpinner from './components/LoadingSpinner'
 
 const API_URL = import.meta.env.DEV
   ? 'http://localhost:8000/'
-  : 'https://hbp100-live-api.vercel.app/'
+  : 'https://hbp100-api.vercel.app/'
 
 function App() {
   const [loading, setLoading] = useState(false)
@@ -81,7 +81,7 @@ function App() {
               <div>
                 <h1 className="text-xl sm:text-3xl font-bold">
                   <span className="text-white">HBP100</span>
-                  <span className="text-gray-500">: Privacy Firewall</span>
+                  <span className="text-gray-500"> Privacy Firewall</span>
                 </h1>
                 <p className="text-xs sm:text-sm text-gray-500 mt-0.5 sm:mt-1">
                   Your secrets are masked before they ever reach the LLM
@@ -245,11 +245,10 @@ function App() {
           </h2>
           <div className="grid gap-3 sm:gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
             {[
-              { label: 'Package Size', value: '322 KB', icon: '📦' },
-              { label: 'Precision', value: '100%', icon: '🎯' },
-              { label: 'F1 Score', value: '84%', icon: '📊' },
-              { label: 'Latency', value: '0.77 ms', icon: '⚡' },
-              { label: 'Published', value: 'PyPI', icon: '📚' },
+              { label: 'Package Size', value: '590 KB', icon: '📦' },
+              { label: 'Predictions/sec', value: '7367', icon: '🚀' },
+              { label: 'F1 Score', value: '91%', icon: '📊' },
+              { label: 'Latency', value: '0.136 ms', icon: '⚡' },
             ].map((bench, i) => (
               <div key={i} className="bg-gray-950 rounded-lg p-3 sm:p-6 border border-gray-800 card-glow text-center">
                 <div className="text-2xl sm:text-3xl mb-1 sm:mb-2">{bench.icon}</div>

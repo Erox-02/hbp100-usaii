@@ -22,10 +22,15 @@ if (prompt.trim() && !loading) {
 }
 
 const examples = [
-"My birthday is 14th August 2009. What's my zodiac sign?",
-"I was born on 23 March 1995. Tell me my horoscope.",
-"Convert 15 June 2024 to Hijri calendar",
-"My email is john@gmail.com and SSN is 123-45-6789"
+[
+  "Patient John Doe (MRN: 48291) was prescribed Metformin. Explain the treatment plan.",
+
+  "Policy number INS-482913 and SSN 123-45-6789 appear on this insurance claim. Explain what the document contains.",
+
+  "Contact patient Sarah Johnson at (555) 123-4567 to schedule a follow-up appointment.",
+
+  "This discharge note for patient Michael Brown contains address 221B Baker Street and phone number 9876543210. Summarize the key instructions."
+]
 ]
 
 const copyToClipboard = (text) => {
