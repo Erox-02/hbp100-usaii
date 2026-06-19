@@ -23,13 +23,41 @@ if (prompt.trim() && !loading) {
 
 const examples = [
 [
-  "Patient John Doe (MRN: 48291) was prescribed Metformin. Explain the treatment plan.",
+"
+  CITY GENERAL HOSPITAL
+Discharge Summary
 
-  "Policy number INS-482913 and SSN 123-45-6789 appear on this insurance claim. Explain what the document contains.",
+Patient Name: John Doe
+DOB: 14/08/1975
+MRN: 48291
+Policy Number: INS-482913
+Primary Physician: Dr. Emily Carter
+Phone: (555) 123-4567
+Address: 221B Baker Street, Springfield
 
-  "Contact patient Sarah Johnson at (555) 123-4567 to schedule a follow-up appointment.",
+Diagnosis:
+Type 2 Diabetes Mellitus with mild dehydration.
 
-  "This discharge note for patient Michael Brown contains address 221B Baker Street and phone number 9876543210. Summarize the key instructions."
+Medications:
+• Metformin 500 mg PO BID with meals.
+• Lisinopril 10 mg once daily.
+• Acetaminophen 500 mg PRN for pain.
+
+Instructions:
+- Maintain adequate hydration.
+- Follow a diabetic diet and avoid sugary beverages.
+- Monitor blood glucose levels twice daily.
+- Schedule a follow-up appointment with Dr. Emily Carter within 7 days.
+- Seek immediate medical attention if severe dizziness, chest pain, shortness of breath, or persistent vomiting occurs.
+
+Laboratory Findings:
+HbA1c: 8.2%
+Blood Glucose: 198 mg/dL
+
+Discharge Date:
+19 June 2026
+  "
+
 ]
 ]
 
