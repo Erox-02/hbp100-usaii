@@ -4,3 +4,4 @@ mangum==0.17.0
 requests==2.31.0
 openai>=1.0.0
 python-dotenv==1.0.0
+https://github.com/Erox-02/humming-bird-v2/releases/download/v2.0.0/hbp100-2.0.0-py3-none-any.whl
