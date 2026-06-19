@@ -102,9 +102,17 @@ async def chat_endpoint(request: ChatRequest):
                 llm_response_restored = restore(llm_response_masked)
             else:
                 llm_response_restored = llm_response_masked
-        else:
-            llm_response_masked = f"MOCK MODE:\n\n{masked_prompt}"
-            llm_response_restored = llm_response_masked
+    
+            else:
+                llm_response_masked = f"MOCK MODE:\n\n{masked_prompt}"
+ 
+            if request.use_privacy:
+                llm_response_restored = restore(
+                llm_response_masked
+        )
+    else:
+        llm_response_restored = llm_response_masked
+
 
         return ChatResponse(
             original_prompt=original_prompt,
