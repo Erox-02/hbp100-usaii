@@ -1,5 +1,7 @@
 # HBP100-USAII
 
+Move from confusion → understanding → action while keeping sensitive information protected.
+
 **AI-powered document understanding with privacy-preserving LLM workflows**
 
 HBP100-USAII is a demonstration application built on top of **HBP100 v2**, a lightweight contextual privacy firewall.
@@ -180,44 +182,6 @@ External AI models never see sensitive information in plain form.
 
 ---
 
-# Screenshots
-
-Screenshots are available in:
-
-```text
-/assets
-```
-
----
-
-## Application Screenshots
-
-Home Page
-
-![](assets/home.png)
-
-Original Prompt
-
-![](assets/original-prompt.png)
-
-Masked Prompt
-
-![](assets/masked-prompt.png)
-
-Metadata Vault
-
-![](assets/metadata-vault.png)
-
-LLM Response
-
-![](assets/llm-response.png)
-
-Restored Response
-
-![](assets/restored-response.png)
-
----
-
 # Live Demo
 
 Frontend
@@ -309,9 +273,9 @@ Tested on:
 
 Screenshots:
 
-Arch Linux
+Arch Linux 
 
-![](assets/arch-linux.png)
+![](assets/arch.png)
 
 Windows
 
@@ -427,6 +391,64 @@ https://github.com/Erox-02/hbp100-usaii
 
 ---
 
+# Limitations
+
+Current limitations include:
+
+* Some entities may not always be detected.
+* OCR support is not yet implemented.
+* Entity recognition depends on extractor coverage.
+* Placeholder numbering follows extraction order rather than textual order.
+* Some edge cases may produce imperfect replacements.
+
+## Root Cause
+
+HBP100 v2 uses a hybrid architecture combining:
+
+* Regex-based entity extractors
+* TF-IDF vectorizer
+* LightGBM classifier
+
+Currently, the machine learning layer and regex extractors operate independently rather than using a fully overlapping context-aware pipeline.
+
+The project intentionally prioritizes:
+
+* Low latency
+* Lightweight deployment
+* Explainability
+* Modular architecture
+
+over heavyweight NER models.
+
+---
+
+# Future Roadmap
+
+## v2.1
+
+* Improve extractor coverage
+* Better overlap handling
+* Better placeholder ordering
+* Additional edge-case fixes
+
+## v2.2
+
+* PDF support
+* Better document parsing
+* Expanded entity coverage
+
+## v3
+
+* OCR integration
+* Image understanding
+* Multi-language support
+* Context-aware extraction
+* Streaming support
+* Optional retrieval from trusted public resources
+
+The project intentionally favors speed, modularity, and explainability over heavyweight architectures.
+
+
 # License
 
 MIT License
@@ -435,7 +457,7 @@ MIT License
 
 # Author
 
-**Dipanjan Dutta**
+**Dipanjan Dutta & Anushka Dutta**
 
 ---
 
