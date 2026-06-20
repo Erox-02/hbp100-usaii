@@ -6,9 +6,11 @@ HBP100-USAII is a demonstration application built on top of **HBP100 v2**, a lig
 
 It helps patients, families, and caregivers understand medical and insurance documents in plain language while protecting sensitive information before external AI processing.
 
+Built for the **USAII Global AI Hackathon 2026**.
+
 ---
 
-## Problem
+# Problem
 
 People often receive discharge instructions, insurance approvals, and healthcare documents that are difficult to understand.
 
@@ -25,7 +27,7 @@ HBP100-USAII allows users to obtain AI-generated explanations without exposing p
 
 ---
 
-## Solution
+# Solution
 
 Documents are processed through HBP100 before reaching the language model.
 
@@ -35,39 +37,39 @@ The LLM generates explanations and checklists using only masked text.
 
 Original information is restored locally after processing.
 
+No sensitive information leaves the privacy layer.
+
 ---
 
-## Workflow
+# Workflow
 
 ```text
-Official letter/Hospital report
-        ↓
-HBP100 v2
-        ↓
-Entity Extractors
-        ↓
-LightGBM Policy Engine
-        ↓
-Placeholder Generator
-        ↓
-Metadata Vault
-        ↓
-Masked Prompt
-        ↓
-Groq Llama-3.3-70B
-        ↓
-Explanation + Checklist
-        ↓
-Placeholder Validation
-        ↓
-Restoration
-        ↓
-Final Response
+Official Letter / Hospital Report / Insurance Document
+                        ↓
+                    HBP100 v2
+                        ↓
+               Entity Extractors
+                        ↓
+             Placeholder Generator
+                        ↓
+                 Metadata Vault
+                        ↓
+                  Masked Prompt
+                        ↓
+               Groq Llama-3.3-70B
+                        ↓
+            Explanation + Checklist
+                        ↓
+             Placeholder Validation
+                        ↓
+                   Restoration
+                        ↓
+                  Final Response
 ```
 
 ---
 
-## Features
+# Features
 
 * Privacy-preserving AI explanations
 * Plain-language summaries
@@ -77,99 +79,134 @@ Final Response
 * Reversible masking
 * Human-in-the-loop design
 * Medical safety guardrails
-* Mobile friendly web interface
+* Mobile-friendly web interface
 * FastAPI backend
 * Vercel deployment
 
 ---
 
-## Example
+# Example
 
-### Input
+## Input
 
 ```text
-Patient John Doe (MRN: 48291) was diagnosed with Type 2 Diabetes.
+Patient John Doe (MRN: 48291) was admitted to City General Hospital with Type 2 Diabetes Mellitus and mild dehydration.
 
-Prescribed Metformin 500mg BID.
+Laboratory findings showed HbA1c of 8.2% and blood glucose of 198 mg/dL.
 
-Schedule a follow-up appointment within 7 days.
+The patient was prescribed Metformin 500 mg twice daily with meals and Lisinopril 10 mg once daily.
 
-Contact patient Sarah Johnson at (555) 123-4567.
+Instructions included maintaining hydration, following a diabetic diet, and monitoring blood glucose levels twice daily.
 
-Explain the treatment plan in simple language and create a checklist.
+Seek immediate medical attention if severe dizziness, chest pain, shortness of breath, or persistent vomiting occurs.
+
+For additional questions, email johndoe1975@gmail.com.
+
+Explain the discharge instructions in simple language and create a checklist, but do not provide medical advice or change medications.
 ```
 
 ---
 
-### Masked Prompt
+## Masked Prompt
 
 ```text
-Patient [NAME_1] (MRN: [MRN_1])
+Patient [NAME_1] (MRN: [MRN_1]) was admitted [HOSPITAL_1] with Type 2 Diabetes Mellitus and mild dehydration.
 
-...
+Laboratory findings showed HbA1c of 8.2% and blood glucose of 198 mg/dL.
 
-Contact patient [PHONE_1]
+The patient was prescribed Metformin 500 mg twice daily with meals and Lisinopril 10 mg once daily.
 
-...
+Instructions included maintaining hydration, following a diabetic diet, and monitoring blood glucose levels twice daily.
+
+Seek immediate medical attention if severe dizziness, chest pain, shortness of breath, or persistent vomiting occurs.
+
+For additional questions, email [EMAIL_1].
+
+Explain the discharge instructions in simple language and create a checklist, but do not provide medical advice or change medications.
+
 ```
 
 ---
 
-### AI Response
+## AI Response
 
 * Explain instructions in plain language
-* Generate checklist
+* Generate a checklist
 * Highlight warnings
 * Preserve placeholders
 
 ---
 
-### Restored Output
+## Restored Output
 
-Sensitive values are restored locally.
+Sensitive values are restored , *user trades almost nothing for privact*.
 
-No sensitive information leaves the device.
+Original information never leaves the privacy layer.
 
 ---
 
-## Architecture
+# Live Demo
 
-### Frontend
+Frontend
+
+https://hbp100-usaii.vercel.app
+
+Core Package
+
+https://github.com/Erox-02/humming-bird-v2
+
+Repository
+
+https://github.com/Erox-02/hbp100-usaii
+
+---
+
+# Architecture
+
+## Frontend
 
 * React
 * Vite
 * Tailwind CSS
 
-### Backend
+## Backend
 
 * FastAPI
 * Groq API
 * HBP100 v2
 
-### AI Components
+## AI Components
 
-* TF-IDF
-* LightGBM policy engine
+* TF-IDF vectorizer
+* LightGBM classifier
 * Placeholder validator
-* Llama-3.3-70B
+* Groq Llama-3.3-70B
+
+## Privacy Engine
+
+* HBP100 v2
+* Modular entity extractors
+* Placeholder generation
+* Metadata vault
+* Restoration engine
 
 ---
 
-## Performance
+# Performance
 
-### Privacy Engine Only
+## Privacy Pipeline
 
 Average request latency:
 
 **≈388 ms**
 
-(preloaded model)
+(Model preloaded)
 
 ---
 
-### Full Pipeline
+## End-to-End Pipeline
 
-Privacy masking + Groq inference + restoration
+Privacy masking + LLM inference + restoration
 
 Average response latency:
 
@@ -177,13 +214,13 @@ Average response latency:
 
 ---
 
-## Responsible AI
+# Responsible AI
 
-### Risk
+## Risk
 
 Users may over-rely on AI explanations.
 
-### Mitigation
+## Mitigation
 
 The system only explains information already present.
 
@@ -196,7 +233,7 @@ It never:
 
 ---
 
-## Human-in-the-Loop
+# Human-in-the-Loop
 
 HBP100-USAII does not replace professionals.
 
@@ -206,55 +243,59 @@ The system acts as an explanation tool, not a decision-maker.
 
 ---
 
-## Built With
+# Built With
 
-### Frontend
+## Frontend
 
 * React
 * Vite
 * Tailwind CSS
 
-### Backend
+## Backend
 
 * FastAPI
 
-### AI
+## AI
 
-* Groq
+* Groq API
 * Llama-3.3-70B
-* Hbp100-v2
 
-### Privacy Engine
+## Privacy Engine
 
-* Hbp100-v2
-* Regex Extractors
+* HBP100 v2
+* Regex extractors
+* TF-IDF vectorizer
+* LightGBM classifier
+* Metadata vault
 
 ---
 
-## Core Package
+# Core Package
 
-HBP100 v2
+**HBP100 v2**
 
 https://github.com/Erox-02/humming-bird-v2
 
 ---
 
-## Repository
+# Repository
 
 https://github.com/Erox-02/hbp100-usaii
 
 ---
 
-## License
+# License
 
 MIT License
 
 ---
 
-## Author
+# Author
 
-Dipanjan Dutta
+**Dipanjan Dutta**
 
 ---
 
-Built for the USAII Global AI Hackathon 2026.
+Built for the **USAII Global AI Hackathon 2026**.
+
+*"Sensitive information should never reach external AI systems unnecessarily."*
