@@ -275,15 +275,15 @@ Arch Linux
 
 Windows
 
-![](assets/windows.png)
+![](assets/windows.jpeg)
 
 Linux Mint
 
-![](assets/linux-mint.png)
+![](assets/linux-mint.jpeg)
 
 Android
 
-![](assets/phone.jpg)
+![](assets/phone.jpeg)
 
 ---
 
