@@ -18,7 +18,7 @@ function PromptInput({ onSubmit, loading, onWarmup }) {
   }
 
   const examples = [
-    ```js
+  
 {
   title: "Hospital Discharge Example",
   text: `Patient John Doe (MRN: 48291) was admitted to City General Hospital with Type 2 Diabetes Mellitus and mild dehydration.
@@ -49,7 +49,6 @@ For support or clarification, email michaelbrown.help@gmail.com.
 
 Explain what this document means and provide a list of next steps without making financial or medical decisions.`
 }
-```
 
   ]
 
