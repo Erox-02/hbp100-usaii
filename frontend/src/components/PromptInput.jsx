@@ -33,7 +33,7 @@ Seek immediate medical attention if severe dizziness, chest pain, shortness of b
 
 For additional questions, email johndoe1975@gmail.com.
 
-Explain the discharge instructions in simple language and create a checklist, but do not provide medical advice or change medications.`
+Explain the discharge instructions in simple language and create a checklist ..`
 },
 {
   title: "Insurance Approval Example",
