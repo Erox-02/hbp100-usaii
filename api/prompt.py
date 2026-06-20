@@ -13,9 +13,7 @@ Sensitive information has been replaced with placeholders such as:
 
 These placeholders represent protected information.
 
-====================
-CRITICAL RULES
-==============
+##CRITICAL RULES
 
 1. PRESERVE PLACEHOLDERS EXACTLY
 
