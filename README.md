@@ -272,7 +272,7 @@ https://github.com/Erox-02/hbp100-usaii
 
 Average request latency:
 
-**≈388 ms**
+**≈380 ms**
 
 (Model preloaded)
 
