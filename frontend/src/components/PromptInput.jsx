@@ -18,31 +18,39 @@ function PromptInput({ onSubmit, loading, onWarmup }) {
   }
 
   const examples = [
-    {
-      title: " Hospital Discharge Example",
-      text: `Patient John Doe (MRN: 48291) was diagnosed with Type 2 Diabetes.
+    ```js
+{
+  title: "Hospital Discharge Example",
+  text: `Patient John Doe (MRN: 48291) was admitted to City General Hospital with Type 2 Diabetes Mellitus and mild dehydration.
 
-Prescribed Metformin 500mg BID.
+Laboratory findings showed HbA1c of 8.2% and blood glucose of 198 mg/dL.
 
-Schedule a follow-up appointment with Dr. Emily Carter within 7 days.
+The patient was prescribed Metformin 500 mg twice daily with meals and Lisinopril 10 mg once daily.
 
-Contact patient Sarah Johnson at (555) 123-4567. Explain the treatment plan in simple language and create a checklist.`
-    },
-    {
-      title: " Insurance Claim Example",
-      text: `Patient Michael Brown
+Instructions included maintaining hydration, following a diabetic diet, and monitoring blood glucose levels twice daily.
 
-Policy Number INS-593821
-Case ID CASE-4721
+Seek immediate medical attention if severe dizziness, chest pain, shortness of breath, or persistent vomiting occurs.
 
-Coverage approval received.
+For additional questions, email johndoe1975@gmail.com.
 
-Submit reimbursement forms before July 15, 2026.
+Explain the discharge instructions in simple language and create a checklist, but do not provide medical advice or change medications.`
+},
+{
+  title: "Insurance Approval Example",
+  text: `Patient Michael Brown (MRN: 59382) recently completed treatment for asthma and hyperlipidemia.
 
-For assistance call (555) 234-9876.
+Current medications include Atorvastatin 20 mg once daily and an Albuterol inhaler as needed.
 
-Explain what this document means and list the next steps.`
-    }
+Insurance policy INS-482913 has approved reimbursement for outpatient services.
+
+Coverage remains active through July 2027. Reimbursement documents should be submitted before July 15, 2026.
+
+For support or clarification, email michaelbrown.help@gmail.com.
+
+Explain what this document means and provide a list of next steps without making financial or medical decisions.`
+}
+```
+
   ]
 
   const copyToClipboard = (text) => {
