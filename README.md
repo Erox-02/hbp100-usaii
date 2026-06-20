@@ -148,11 +148,17 @@ Explain the discharge instructions in simple language and create a checklist.
 ```text
 Patient [NAME_1] (MRN: [MRN_1]) was admitted [HOSPITAL_1] with Type 2 Diabetes Mellitus and mild dehydration.
 
-...
+Laboratory findings showed HbA1c of 8.2% and blood glucose of 198 mg/dL.
+
+The patient was prescribed Metformin 500 mg twice daily with meals and Lisinopril 10 mg once daily.
+
+Instructions included maintaining hydration, following a diabetic diet, and monitoring blood glucose levels twice daily.
+
+Seek immediate medical attention if severe dizziness, chest pain, shortness of breath, or persistent vomiting occurs.
 
 For additional questions, email [EMAIL_1].
 
-...
+Explain the discharge instructions in simple language and create a checklist ..
 ```
 
 ---
