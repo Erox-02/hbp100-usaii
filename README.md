@@ -47,7 +47,28 @@ External AI models never see sensitive information in plain form.
 
 > Sensitive information should never reach external AI systems unnecessarily.
 
-HBP100-USAII performs privacy-preserving transformations before AI inference and restores original information afterward, allowing users to benefit from AI assistance while trading almost nothing for privacy.
+HBP100-USAII follows a second principle as well:
+
+> Do not use heavyweight AI when lightweight methods are sufficient.
+
+Many problems do not require large neural models. Tasks such as entity extraction, masking, placeholder generation, and validation can often be solved faster and more transparently using lightweight machine learning and deterministic components.
+
+Instead of placing a large neural model everywhere in the pipeline, HBP100 uses a modular approach:
+
+* Lightweight extractors for entity detection.
+* TF-IDF + LightGBM for decision making.
+* Deterministic placeholder generation and restoration.
+* Large language models only where natural language understanding provides meaningful value.
+
+This approach prioritizes:
+
+* Low latency
+* Explainability
+* Modularity
+* Efficiency
+* Responsible AI usage
+
+The goal is not to maximize model size, but to use the right tool for each task.
 
 ---
 
