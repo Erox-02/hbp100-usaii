@@ -35,9 +35,17 @@ Sensitive information is replaced with placeholders.
 
 The LLM generates explanations and checklists using only masked text.
 
-Original information is restored locally after processing.
+Original information is restored after processing.
 
-No sensitive information leaves the privacy layer.
+No sensitive information reaches external AI systems in plain form.
+
+---
+
+# Design Philosophy
+
+> Sensitive information should never reach external AI systems unnecessarily.
+
+HBP100-USAII performs privacy-preserving transformations before AI inference and restores original information afterward, allowing users to benefit from AI assistance while trading almost nothing for privacy.
 
 ---
 
@@ -85,6 +93,16 @@ Official Letter / Hospital Report / Insurance Document
 
 ---
 
+# Intended Users
+
+* Patients receiving discharge instructions
+* Families under stress
+* Caregivers
+* Individuals reviewing insurance documents
+* Users seeking AI explanations without exposing private information
+
+---
+
 # Example
 
 ## Input
@@ -122,8 +140,7 @@ Seek immediate medical attention if severe dizziness, chest pain, shortness of b
 
 For additional questions, email [EMAIL_1].
 
-Explain the discharge instructions in simple language and create a checklist, but do not provide medical advice or change medications.
-
+Explain the discharge instructions in simple language and create a checklist.
 ```
 
 ---
@@ -139,9 +156,30 @@ Explain the discharge instructions in simple language and create a checklist, bu
 
 ## Restored Output
 
-Sensitive values are restored , *user trades almost nothing for privact*.
+Sensitive values are restored after processing, allowing users to benefit from AI explanations while trading almost nothing for privacy.
 
-Original information never leaves the privacy layer.
+External AI models never see sensitive information in plain form.
+
+---
+
+# Screenshots
+
+Screenshots are available in:
+
+```text
+/assets
+```
+
+Including:
+
+* Home page
+* Original prompt
+* Masked prompt
+* Metadata vault
+* LLM response
+* Restored response
+* Performance benchmarks
+* Cross-platform screenshots
 
 ---
 
@@ -149,15 +187,21 @@ Original information never leaves the privacy layer.
 
 Frontend
 
+```text
 https://hbp100-usaii.vercel.app
+```
 
 Core Package
 
+```text
 https://github.com/Erox-02/humming-bird-v2
+```
 
 Repository
 
+```text
 https://github.com/Erox-02/hbp100-usaii
+```
 
 ---
 
@@ -188,7 +232,8 @@ https://github.com/Erox-02/hbp100-usaii
 * Modular entity extractors
 * Placeholder generation
 * Metadata vault
-* Restoration engine
+* Placeholder restoration
+* Placeholder validation
 
 ---
 
@@ -214,6 +259,26 @@ Average response latency:
 
 ---
 
+# Platform Compatibility
+
+HBP100-USAII is browser-based and requires no platform-specific installation.
+
+Tested on:
+
+* Arch Linux (KDE Plasma)
+* Windows
+* Linux Mint
+* Android devices
+* Modern web browsers
+
+Cross-platform screenshots are available in:
+
+```text
+/assets
+```
+
+---
+
 # Responsible AI
 
 ## Risk
@@ -227,9 +292,10 @@ The system only explains information already present.
 It never:
 
 * Diagnoses diseases
-* Prescribes medication
+* Prescribes medications
 * Changes dosages
-* Makes legal or financial decisions
+* Makes legal decisions
+* Makes financial decisions
 
 ---
 
@@ -240,6 +306,32 @@ HBP100-USAII does not replace professionals.
 Final medical, legal, and financial decisions remain with qualified humans.
 
 The system acts as an explanation tool, not a decision-maker.
+
+---
+
+# Limitations
+
+HBP100-USAII is designed as a lightweight privacy firewall and does not guarantee perfect extraction.
+
+Current limitations include:
+
+* Some entities may not always be detected.
+* OCR support is not yet implemented.
+* Entity recognition depends on extractor coverage.
+* Placeholder numbering follows extraction order rather than textual order.
+* Some edge cases may produce imperfect replacements.
+
+### Root Cause
+
+HBP100 v2 uses a hybrid architecture combining:
+
+* Regex-based entity extractors
+* TF-IDF vectorizer
+* LightGBM classifier
+
+Currently, the machine learning layer and regex extractors operate independently rather than using a fully context-aware overlapping pipeline. As a result, some entities and overlap edge cases may not always be handled perfectly.
+
+The project prioritizes lightweight deployment and speed over heavy NER models.
 
 ---
 
@@ -274,13 +366,17 @@ The system acts as an explanation tool, not a decision-maker.
 
 **HBP100 v2**
 
+```text
 https://github.com/Erox-02/humming-bird-v2
+```
 
 ---
 
 # Repository
 
+```text
 https://github.com/Erox-02/hbp100-usaii
+```
 
 ---
 
@@ -296,6 +392,6 @@ MIT License
 
 ---
 
-Built for the **USAII Global AI Hackathon 2026**.
+Built for the **USAII Global AI Hackathon 2026**
 
 *"Sensitive information should never reach external AI systems unnecessarily."*
