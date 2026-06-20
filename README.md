@@ -240,10 +240,6 @@ Average request latency:
 
 (Model preloaded)
 
-Benchmark:
-
-![](assets/privacy-benchmark.png)
-
 ---
 
 ## End-to-End Pipeline
@@ -256,7 +252,7 @@ Average response latency:
 
 Benchmark:
 
-![](assets/full-pipeline-benchmark.png)
+![](assets/benchmark.png)
 
 ---
 
@@ -275,7 +271,7 @@ Screenshots:
 
 Arch Linux 
 
-![](assets/arch.png)
+![](assets/benchmark.png)
 
 Windows
 
@@ -372,7 +368,7 @@ The project prioritizes lightweight deployment and speed over large NER models.
 
 ## Tools
 
-* Deepseek v3 
+* Deepseek v3 flash
 * Gpt 5.5
 
 ---
@@ -457,7 +453,7 @@ MIT License
 
 # Author
 
-**Dipanjan Dutta & Anushka Dutta**
+**Dipanjan Dutta && Anushka Dutta**
 
 ---
 
