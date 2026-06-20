@@ -4,7 +4,7 @@
 
 HBP100-USAII is a demonstration application built on top of **HBP100 v2**, a lightweight contextual privacy firewall.
 
-It helps patients, families, and caregivers understand medical and insurance documents in plain language while protecting sensitive information before external AI processing.
+It helps patients, caregivers, and individuals reviewing official documents understand complex information in plain language while protecting sensitive information before external AI processing.
 
 Built for the **USAII Global AI Hackathon 2026**.
 
@@ -12,7 +12,7 @@ Built for the **USAII Global AI Hackathon 2026**.
 
 # Problem
 
-People often receive discharge instructions, insurance approvals, and healthcare documents that are difficult to understand.
+People often receive discharge instructions, insurance approvals, and official documents that are difficult to understand.
 
 Many turn to AI for explanations, but sharing these documents can expose sensitive information such as:
 
@@ -37,7 +37,7 @@ The LLM generates explanations and checklists using only masked text.
 
 Original information is restored after processing.
 
-No sensitive information reaches external AI systems in plain form.
+External AI models never see sensitive information in plain form.
 
 ---
 
@@ -93,13 +93,31 @@ Official Letter / Hospital Report / Insurance Document
 
 ---
 
-# Intended Users
+# Intended Users & Decision Context
 
-* Patients receiving discharge instructions
-* Families under stress
-* Caregivers
-* Individuals reviewing insurance documents
-* Users seeking AI explanations without exposing private information
+HBP100-USAII is designed for people who need to understand complex documents and determine appropriate next actions without exposing sensitive information.
+
+Examples include:
+
+* A patient recently discharged from a hospital who wants to understand medications, warning symptoms, and follow-up instructions.
+
+* An elderly parent or caregiver trying to understand discharge summaries or laboratory reports on behalf of a family member.
+
+* An individual reviewing insurance approval or reimbursement documents and determining which forms must be submitted before a deadline.
+
+* A caregiver helping another person understand hospital paperwork while preserving privacy.
+
+The system helps users move from:
+
+```text
+Confusion
+↓
+Understanding
+↓
+Action
+```
+
+Medical, legal, and financial decisions remain the responsibility of qualified professionals.
 
 ---
 
@@ -120,7 +138,7 @@ Seek immediate medical attention if severe dizziness, chest pain, shortness of b
 
 For additional questions, email johndoe1975@gmail.com.
 
-Explain the discharge instructions in simple language and create a checklist, but do not provide medical advice or change medications.
+Explain the discharge instructions in simple language and create a checklist.
 ```
 
 ---
@@ -130,17 +148,11 @@ Explain the discharge instructions in simple language and create a checklist, bu
 ```text
 Patient [NAME_1] (MRN: [MRN_1]) was admitted [HOSPITAL_1] with Type 2 Diabetes Mellitus and mild dehydration.
 
-Laboratory findings showed HbA1c of 8.2% and blood glucose of 198 mg/dL.
-
-The patient was prescribed Metformin 500 mg twice daily with meals and Lisinopril 10 mg once daily.
-
-Instructions included maintaining hydration, following a diabetic diet, and monitoring blood glucose levels twice daily.
-
-Seek immediate medical attention if severe dizziness, chest pain, shortness of breath, or persistent vomiting occurs.
+...
 
 For additional questions, email [EMAIL_1].
 
-Explain the discharge instructions in simple language and create a checklist.
+...
 ```
 
 ---
@@ -149,7 +161,7 @@ Explain the discharge instructions in simple language and create a checklist.
 
 * Explain instructions in plain language
 * Generate a checklist
-* Highlight warnings
+* Highlight warning symptoms
 * Preserve placeholders
 
 ---
@@ -170,16 +182,33 @@ Screenshots are available in:
 /assets
 ```
 
-Including:
+---
 
-* Home page
-* Original prompt
-* Masked prompt
-* Metadata vault
-* LLM response
-* Restored response
-* Performance benchmarks
-* Cross-platform screenshots
+## Application Screenshots
+
+Home Page
+
+![](assets/home.png)
+
+Original Prompt
+
+![](assets/original-prompt.png)
+
+Masked Prompt
+
+![](assets/masked-prompt.png)
+
+Metadata Vault
+
+![](assets/metadata-vault.png)
+
+LLM Response
+
+![](assets/llm-response.png)
+
+Restored Response
+
+![](assets/restored-response.png)
 
 ---
 
@@ -187,21 +216,15 @@ Including:
 
 Frontend
 
-```text
 https://hbp100-usaii.vercel.app
-```
 
 Core Package
 
-```text
 https://github.com/Erox-02/humming-bird-v2
-```
 
 Repository
 
-```text
 https://github.com/Erox-02/hbp100-usaii
-```
 
 ---
 
@@ -247,6 +270,10 @@ Average request latency:
 
 (Model preloaded)
 
+Benchmark:
+
+![](assets/privacy-benchmark.png)
+
 ---
 
 ## End-to-End Pipeline
@@ -257,11 +284,15 @@ Average response latency:
 
 **≈2.3 seconds**
 
+Benchmark:
+
+![](assets/full-pipeline-benchmark.png)
+
 ---
 
 # Platform Compatibility
 
-HBP100-USAII is browser-based and requires no platform-specific installation.
+Browser-based and requires no platform-specific installation.
 
 Tested on:
 
@@ -269,13 +300,24 @@ Tested on:
 * Windows
 * Linux Mint
 * Android devices
-* Modern web browsers
 
-Cross-platform screenshots are available in:
+Screenshots:
 
-```text
-/assets
-```
+Arch Linux
+
+![](assets/arch-linux.png)
+
+Windows
+
+![](assets/windows.png)
+
+Linux Mint
+
+![](assets/linux-mint.png)
+
+Android
+
+![](assets/phone.jpg)
 
 ---
 
@@ -311,8 +353,6 @@ The system acts as an explanation tool, not a decision-maker.
 
 # Limitations
 
-HBP100-USAII is designed as a lightweight privacy firewall and does not guarantee perfect extraction.
-
 Current limitations include:
 
 * Some entities may not always be detected.
@@ -321,7 +361,7 @@ Current limitations include:
 * Placeholder numbering follows extraction order rather than textual order.
 * Some edge cases may produce imperfect replacements.
 
-### Root Cause
+## Root Cause
 
 HBP100 v2 uses a hybrid architecture combining:
 
@@ -329,9 +369,9 @@ HBP100 v2 uses a hybrid architecture combining:
 * TF-IDF vectorizer
 * LightGBM classifier
 
-Currently, the machine learning layer and regex extractors operate independently rather than using a fully context-aware overlapping pipeline. As a result, some entities and overlap edge cases may not always be handled perfectly.
+Currently, the machine learning layer and regex extractors operate independently rather than using a fully context-aware overlapping pipeline.
 
-The project prioritizes lightweight deployment and speed over heavy NER models.
+The project prioritizes lightweight deployment and speed over large NER models.
 
 ---
 
@@ -360,23 +400,24 @@ The project prioritizes lightweight deployment and speed over heavy NER models.
 * LightGBM classifier
 * Metadata vault
 
+## Tools
+
+* Deepseek v3 
+* Gpt 5.5
+
 ---
 
 # Core Package
 
 **HBP100 v2**
 
-```text
 https://github.com/Erox-02/humming-bird-v2
-```
 
 ---
 
 # Repository
 
-```text
 https://github.com/Erox-02/hbp100-usaii
-```
 
 ---
 
