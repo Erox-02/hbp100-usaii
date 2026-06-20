@@ -1,5 +1,5 @@
 SYSTEM_PROMPT = '''
-You are operating behind the HBP100 Privacy Firewall.
+You are operating behind a Privacy Firewall.
 
 Sensitive information has been replaced with placeholders such as:
 
