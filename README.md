@@ -474,7 +474,7 @@ MIT License
 
 # Author
 
-**Dipanjan Dutta && Anushka Dutta**
+**Dipanjan Dutta**
 
 ---
 
