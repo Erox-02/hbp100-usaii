@@ -478,6 +478,4 @@ MIT License
 
 ---
 
-Built for the **USAII Global AI Hackathon 2026**
-
 *"Sensitive information should never reach external AI systems unnecessarily."*
